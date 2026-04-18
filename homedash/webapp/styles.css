@@ -18,31 +18,16 @@
     /* Aliniere verticală a iconițelor Material cu textul înconjurător */
     .material-icons { vertical-align: middle; line-height: 1; }
 
-    /*
-     * Clasa activă pentru linkul curent din sidebar.
-     * Aplicată dinamic de funcția navigate() la fiecare schimbare de pagină.
-     */
     .nav-active { background-color: #eef2ff !important; color: #4338ca !important; }
 
-    /* Fundal semi-transparent al modalului (overlay întunecator) */
     .modal-bg { background: rgba(15, 23, 42, 0.5); }
 
-    /*
-     * Previne scroll-ul paginii când un modal este deschis.
-     * Clasa este adăugată pe <body> de funcția renderModal()
-     */
     body.modal-open { overflow: hidden; }
 
-    /* Scrollbar orizontal discret pentru tabelul de date (pagina Date) */
     .data-table-wrap { overflow-x: auto; }
     .data-table-wrap::-webkit-scrollbar { height: 6px; }
     .data-table-wrap::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
 
-    /*
-     * Popup documentație (README/Ghid):
-     *  - backdrop cu blur pentru separare vizuală mai bună
-     *  - animație de intrare discretă pentru panoul central
-     */
     #docs-modal {
       background: rgba(15, 23, 42, 0.58);
       backdrop-filter: blur(4px);
@@ -55,15 +40,11 @@
     #docs-modal:not(.hidden) #docs-modal-inner {
       animation: docsModalPopIn 0.22s ease-out;
     }
-    #docs-modal-frame {
-      background: #ffffff;
-    }
+    #docs-modal-frame { background: #ffffff; }
     .docs-modal-close {
       transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
     }
-    .docs-modal-close:hover {
-      transform: scale(1.03);
-    }
+    .docs-modal-close:hover { transform: scale(1.03); }
     @keyframes docsModalPopIn {
       from { transform: translateY(10px) scale(0.985); opacity: 0.35; }
       to   { transform: translateY(0) scale(1); opacity: 1; }
@@ -71,83 +52,69 @@
 
 
     /* ═══════════════════════════════════════════════════════════════
-       DARK THEME – IDENTIC CU HOME ASSISTANT
+       DARK THEME – PIXEL PERFECT HOME ASSISTANT
        ═══════════════════════════════════════════════════════════════
 
-       Culorile sunt extrase din tema dark nativă a Home Assistant:
-         • Fundal principal:  #111827  (gray-900 HA)
-         • Fundal carduri:    #1f2937  (gray-800 HA)
-         • Fundal alternativ: #374151  (gray-700 HA)
-         • Borduri:           #374151  (gray-700 HA)
-         • Text principal:    #f9fafb  (gray-50 HA)
-         • Text secundar:     #9ca3af  (gray-400 HA)
-         • Accent:            #6366f1  (indigo – păstrat din HomeDash)
-
-       Strategie de aplicare dark mode:
-        1. Tailwind Play runtime (încărcat local din assets) nu regenerează
-           clase arbitrare în dark mode,
-           deci suprascriem clasele Tailwind existente cu !important.
-        2. Regulile sunt grupate logic: layout → text → componente.
+       Culori extrase pixel cu pixel din screenshot Home Assistant:
+         #1c1c1c  fundal principal  (gri neutru pur, blue_bias=0)
+         #1e1e1e  fundal carduri
+         #1c1c1c  sidebar
+         #2a2a2a  borduri
+         #252525  hover / table head
+         #e8e8e8  text principal
+         #9e9e9e  text secundar
+         #6e6e6e  text terțiar
+         #6366f1  accent indigo HomeDash
     */
     .dark {
-      --bg-main:        #111827; /* fundal principal – identic HA gray-900 */
-      --bg-card:        #1f2937; /* fundal carduri – identic HA gray-800 */
-      --bg-soft:        #2d3748; /* fundal alternativ – HA gray-700 */
-      --border:         #374151; /* borduri – HA gray-700 */
-      --text-main:      #f9fafb; /* text principal – HA gray-50 */
-      --text-muted:     #9ca3af; /* text secundar – HA gray-400 */
-      --accent:         #6366f1; /* indigo – culoarea de accent HomeDash */
-      --accent-hover:   #818cf8; /* indigo mai deschis la hover */
+      --bg-main:        #1c1c1c;
+      --bg-card:        #1e1e1e;
+      --bg-soft:        #252525;
+      --border:         #2a2a2a;
+      --text-main:      #e8e8e8;
+      --text-muted:     #9e9e9e;
+      --accent:         #6366f1;
+      --accent-hover:   #818cf8;
     }
 
-    /* Fundalul întregii pagini în dark mode */
     .dark body { background: var(--bg-main); color: var(--text-main); }
 
-    /* ── Layout ── */
     .dark .bg-slate-50          { background: var(--bg-main) !important; }
     .dark .bg-white             { background: var(--bg-card) !important; }
     .dark .bg-slate-100,
     .dark .bg-slate-50\/50      { background: var(--bg-soft) !important; }
 
-    /* ── Borduri ── */
     .dark .border-slate-200,
     .dark .border-slate-300     { border-color: var(--border) !important; }
 
-    /* ── Text ── */
     .dark .text-slate-900,
     .dark .text-slate-800       { color: var(--text-main) !important; }
     .dark .text-slate-700,
     .dark .text-slate-600       { color: var(--text-muted) !important; }
     .dark .text-slate-500,
-    .dark .text-slate-400       { color: #6b7280 !important; }
+    .dark .text-slate-400       { color: #6e6e6e !important; }
 
-    /* ── Sidebar ── */
     .dark aside {
-      background: #1f2937 !important;
+      background: #1c1c1c !important;
       border-color: var(--border) !important;
     }
 
-    /* ── Navigare sidebar ── */
     .dark .nav-link             { color: var(--text-muted); }
     .dark .nav-link:hover       { background: var(--bg-soft); color: var(--text-main); }
-    /* Linkul activ primește gradient în dark mode (identic cu HA active state) */
     .dark .nav-active {
       background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
       color: white !important;
     }
 
-    /* ── Carduri (toate elementele cu rounded-xl) ── */
     .dark .rounded-xl {
       background: var(--bg-card) !important;
       border: 1px solid var(--border) !important;
     }
 
-    /* ── Tabele ── */
-    .dark table thead            { background: #111827 !important; }
+    .dark table thead            { background: #1c1c1c !important; }
     .dark table tbody tr:hover   { background: rgba(99,102,241,0.08); }
     .dark table td               { color: var(--text-muted); }
 
-    /* ── Input-uri și Dropdown-uri ── */
     .dark input,
     .dark select {
       background: var(--bg-soft);
@@ -160,43 +127,36 @@
       box-shadow: 0 0 0 1px var(--accent);
       outline: none;
     }
-    /* Opțiunile dropdown trebuie să aibă fundal manual (nu moștenesc) */
     .dark select option          { background: var(--bg-card); }
 
-    /* ── Butoane ── */
     .dark button                 { transition: all 0.2s ease; }
     .dark .bg-indigo-600         { background: var(--accent) !important; color: white !important; }
     .dark .bg-indigo-600:hover   { background: var(--accent-hover) !important; }
 
-    /* ── Umbre (ajustate pentru fundaluri întunecate) ── */
-    .dark .shadow-sm  { box-shadow: 0 1px 3px rgba(0,0,0,0.5) !important; }
-    .dark .shadow-xl  { box-shadow: 0 20px 40px rgba(0,0,0,0.7) !important; }
+    .dark .shadow-sm  { box-shadow: 0 1px 3px rgba(0,0,0,0.6) !important; }
+    .dark .shadow-xl  { box-shadow: 0 20px 40px rgba(0,0,0,0.8) !important; }
 
-    /* ── Scrollbar custom ── */
     .dark ::-webkit-scrollbar              { height: 8px; width: 8px; }
     .dark ::-webkit-scrollbar-track        { background: var(--bg-main); }
-    .dark ::-webkit-scrollbar-thumb        { background: #4b5563; border-radius: 6px; }
-    .dark ::-webkit-scrollbar-thumb:hover  { background: #6b7280; }
+    .dark ::-webkit-scrollbar-thumb        { background: #3a3a3a; border-radius: 6px; }
+    .dark ::-webkit-scrollbar-thumb:hover  { background: #4a4a4a; }
 
-    /* ── Popup documentație în dark mode ── */
     .dark #docs-modal {
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
     }
     .dark #docs-modal-inner {
-      background: #1f2937 !important;
+      background: #1e1e1e !important;
       border-color: var(--border) !important;
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.8) !important;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.85) !important;
     }
     .dark .docs-modal-header {
-      background: #111827 !important;
+      background: #1c1c1c !important;
       border-color: var(--border) !important;
     }
-    .dark #docs-modal-frame {
-      background: #1f2937 !important;
-    }
+    .dark #docs-modal-frame { background: #1e1e1e !important; }
     .dark .docs-modal-close:hover {
-      background: #374151 !important;
+      background: #2a2a2a !important;
       color: var(--text-main) !important;
     }

@@ -1,4 +1,4 @@
-﻿/* ═══════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════════
    HOMEDASH – STILURI APLICAȚIE (modularizat)
    ═══════════════════════════════════════════════════════════════
    Fișier extras din blocul <style> al versiunii single-file.
@@ -29,7 +29,7 @@
 
     /*
      * Previne scroll-ul paginii când un modal este deschis.
-     * Clasa este adăugată pe <body> de funcția renderModal().
+     * Clasa este adăugată pe <body> de funcția renderModal()
      */
     body.modal-open { overflow: hidden; }
 
@@ -71,26 +71,32 @@
 
 
     /* ═══════════════════════════════════════════════════════════════
-       DARK THEME – DESIGN PREMIUM SaaS
+       DARK THEME – IDENTIC CU HOME ASSISTANT
        ═══════════════════════════════════════════════════════════════
 
-       Variabilele CSS definite pe `.dark` sunt folosite de toate
-       regulile de mai jos. Schimbând o variabilă, schimbi tot tema.
+       Culorile sunt extrase din tema dark nativă a Home Assistant:
+         • Fundal principal:  #111827  (gray-900 HA)
+         • Fundal carduri:    #1f2937  (gray-800 HA)
+         • Fundal alternativ: #374151  (gray-700 HA)
+         • Borduri:           #374151  (gray-700 HA)
+         • Text principal:    #f9fafb  (gray-50 HA)
+         • Text secundar:     #9ca3af  (gray-400 HA)
+         • Accent:            #6366f1  (indigo – păstrat din HomeDash)
 
        Strategie de aplicare dark mode:
         1. Tailwind Play runtime (încărcat local din assets) nu regenerează
            clase arbitrare în dark mode,
-            deci suprascriem clasele Tailwind existente cu `!important`.
-         2. Regulile sunt grupate logic: layout → text → componente.
+           deci suprascriem clasele Tailwind existente cu !important.
+        2. Regulile sunt grupate logic: layout → text → componente.
     */
     .dark {
-      --bg-main:        #0b1220; /* fundal principal pagină */
-      --bg-card:        #121a2b; /* fundal carduri / panouri */
-      --bg-soft:        #182235; /* fundal alternativ mai deschis */
-      --border:         #243045; /* culoare borduri */
-      --text-main:      #e6edf3; /* text principal */
-      --text-muted:     #9fb0c3; /* text secundar / gri */
-      --accent:         #6366f1; /* indigo – culoarea de accent */
+      --bg-main:        #111827; /* fundal principal – identic HA gray-900 */
+      --bg-card:        #1f2937; /* fundal carduri – identic HA gray-800 */
+      --bg-soft:        #2d3748; /* fundal alternativ – HA gray-700 */
+      --border:         #374151; /* borduri – HA gray-700 */
+      --text-main:      #f9fafb; /* text principal – HA gray-50 */
+      --text-muted:     #9ca3af; /* text secundar – HA gray-400 */
+      --accent:         #6366f1; /* indigo – culoarea de accent HomeDash */
       --accent-hover:   #818cf8; /* indigo mai deschis la hover */
     }
 
@@ -113,18 +119,18 @@
     .dark .text-slate-700,
     .dark .text-slate-600       { color: var(--text-muted) !important; }
     .dark .text-slate-500,
-    .dark .text-slate-400       { color: #7c8da5 !important; }
+    .dark .text-slate-400       { color: #6b7280 !important; }
 
     /* ── Sidebar ── */
     .dark aside {
-      background: #0f172a !important;
+      background: #1f2937 !important;
       border-color: var(--border) !important;
     }
 
     /* ── Navigare sidebar ── */
     .dark .nav-link             { color: var(--text-muted); }
     .dark .nav-link:hover       { background: var(--bg-soft); color: var(--text-main); }
-    /* Linkul activ primește gradient în dark mode (diferit față de light mode) */
+    /* Linkul activ primește gradient în dark mode (identic cu HA active state) */
     .dark .nav-active {
       background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
       color: white !important;
@@ -137,7 +143,7 @@
     }
 
     /* ── Tabele ── */
-    .dark table thead            { background: #0f172a !important; }
+    .dark table thead            { background: #111827 !important; }
     .dark table tbody tr:hover   { background: rgba(99,102,241,0.08); }
     .dark table td               { color: var(--text-muted); }
 
@@ -163,33 +169,34 @@
     .dark .bg-indigo-600:hover   { background: var(--accent-hover) !important; }
 
     /* ── Umbre (ajustate pentru fundaluri întunecate) ── */
-    .dark .shadow-sm  { box-shadow: 0 1px 2px rgba(0,0,0,0.4) !important; }
-    .dark .shadow-xl  { box-shadow: 0 20px 40px rgba(0,0,0,0.6) !important; }
+    .dark .shadow-sm  { box-shadow: 0 1px 3px rgba(0,0,0,0.5) !important; }
+    .dark .shadow-xl  { box-shadow: 0 20px 40px rgba(0,0,0,0.7) !important; }
 
-    /* ── Scrollbar custom (detaliu premium) ── */
+    /* ── Scrollbar custom ── */
     .dark ::-webkit-scrollbar              { height: 8px; width: 8px; }
-    .dark ::-webkit-scrollbar-thumb        { background: #2a3a55; border-radius: 6px; }
-    .dark ::-webkit-scrollbar-thumb:hover  { background: #3b4d6b; }
+    .dark ::-webkit-scrollbar-track        { background: var(--bg-main); }
+    .dark ::-webkit-scrollbar-thumb        { background: #4b5563; border-radius: 6px; }
+    .dark ::-webkit-scrollbar-thumb:hover  { background: #6b7280; }
 
     /* ── Popup documentație în dark mode ── */
     .dark #docs-modal {
-      background: rgba(2, 6, 23, 0.74);
+      background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
     }
     .dark #docs-modal-inner {
-      background: #0f172a !important;
+      background: #1f2937 !important;
       border-color: var(--border) !important;
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7) !important;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.8) !important;
     }
     .dark .docs-modal-header {
-      background: #111b2d !important;
+      background: #111827 !important;
       border-color: var(--border) !important;
     }
     .dark #docs-modal-frame {
-      background: #0f172a !important;
+      background: #1f2937 !important;
     }
     .dark .docs-modal-close:hover {
-      background: #1f2a40 !important;
+      background: #374151 !important;
       color: var(--text-main) !important;
     }

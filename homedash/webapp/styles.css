@@ -1,0 +1,195 @@
+﻿/* ═══════════════════════════════════════════════════════════════
+   HOMEDASH – STILURI APLICAȚIE (modularizat)
+   ═══════════════════════════════════════════════════════════════
+   Fișier extras din blocul <style> al versiunii single-file.
+   Principii:
+     • păstrăm 1:1 aspectul vizual original
+     • grupăm stilurile pe zone (light mode, dark mode, componente)
+     • evităm schimbări de layout în această etapă de cleanup
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────
+   STILURI GLOBALE (Light Mode)
+   ───────────────────────────────────────────────────────────── */
+
+    /* Font principal al aplicației */
+    body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+
+    /* Aliniere verticală a iconițelor Material cu textul înconjurător */
+    .material-icons { vertical-align: middle; line-height: 1; }
+
+    /*
+     * Clasa activă pentru linkul curent din sidebar.
+     * Aplicată dinamic de funcția navigate() la fiecare schimbare de pagină.
+     */
+    .nav-active { background-color: #eef2ff !important; color: #4338ca !important; }
+
+    /* Fundal semi-transparent al modalului (overlay întunecator) */
+    .modal-bg { background: rgba(15, 23, 42, 0.5); }
+
+    /*
+     * Previne scroll-ul paginii când un modal este deschis.
+     * Clasa este adăugată pe <body> de funcția renderModal().
+     */
+    body.modal-open { overflow: hidden; }
+
+    /* Scrollbar orizontal discret pentru tabelul de date (pagina Date) */
+    .data-table-wrap { overflow-x: auto; }
+    .data-table-wrap::-webkit-scrollbar { height: 6px; }
+    .data-table-wrap::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+    /*
+     * Popup documentație (README/Ghid):
+     *  - backdrop cu blur pentru separare vizuală mai bună
+     *  - animație de intrare discretă pentru panoul central
+     */
+    #docs-modal {
+      background: rgba(15, 23, 42, 0.58);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    #docs-modal-inner {
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 30px 80px rgba(15, 23, 42, 0.28);
+    }
+    #docs-modal:not(.hidden) #docs-modal-inner {
+      animation: docsModalPopIn 0.22s ease-out;
+    }
+    #docs-modal-frame {
+      background: #ffffff;
+    }
+    .docs-modal-close {
+      transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+    .docs-modal-close:hover {
+      transform: scale(1.03);
+    }
+    @keyframes docsModalPopIn {
+      from { transform: translateY(10px) scale(0.985); opacity: 0.35; }
+      to   { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       DARK THEME – DESIGN PREMIUM SaaS
+       ═══════════════════════════════════════════════════════════════
+
+       Variabilele CSS definite pe `.dark` sunt folosite de toate
+       regulile de mai jos. Schimbând o variabilă, schimbi tot tema.
+
+       Strategie de aplicare dark mode:
+        1. Tailwind Play runtime (încărcat local din assets) nu regenerează
+           clase arbitrare în dark mode,
+            deci suprascriem clasele Tailwind existente cu `!important`.
+         2. Regulile sunt grupate logic: layout → text → componente.
+    */
+    .dark {
+      --bg-main:        #0b1220; /* fundal principal pagină */
+      --bg-card:        #121a2b; /* fundal carduri / panouri */
+      --bg-soft:        #182235; /* fundal alternativ mai deschis */
+      --border:         #243045; /* culoare borduri */
+      --text-main:      #e6edf3; /* text principal */
+      --text-muted:     #9fb0c3; /* text secundar / gri */
+      --accent:         #6366f1; /* indigo – culoarea de accent */
+      --accent-hover:   #818cf8; /* indigo mai deschis la hover */
+    }
+
+    /* Fundalul întregii pagini în dark mode */
+    .dark body { background: var(--bg-main); color: var(--text-main); }
+
+    /* ── Layout ── */
+    .dark .bg-slate-50          { background: var(--bg-main) !important; }
+    .dark .bg-white             { background: var(--bg-card) !important; }
+    .dark .bg-slate-100,
+    .dark .bg-slate-50\/50      { background: var(--bg-soft) !important; }
+
+    /* ── Borduri ── */
+    .dark .border-slate-200,
+    .dark .border-slate-300     { border-color: var(--border) !important; }
+
+    /* ── Text ── */
+    .dark .text-slate-900,
+    .dark .text-slate-800       { color: var(--text-main) !important; }
+    .dark .text-slate-700,
+    .dark .text-slate-600       { color: var(--text-muted) !important; }
+    .dark .text-slate-500,
+    .dark .text-slate-400       { color: #7c8da5 !important; }
+
+    /* ── Sidebar ── */
+    .dark aside {
+      background: #0f172a !important;
+      border-color: var(--border) !important;
+    }
+
+    /* ── Navigare sidebar ── */
+    .dark .nav-link             { color: var(--text-muted); }
+    .dark .nav-link:hover       { background: var(--bg-soft); color: var(--text-main); }
+    /* Linkul activ primește gradient în dark mode (diferit față de light mode) */
+    .dark .nav-active {
+      background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
+      color: white !important;
+    }
+
+    /* ── Carduri (toate elementele cu rounded-xl) ── */
+    .dark .rounded-xl {
+      background: var(--bg-card) !important;
+      border: 1px solid var(--border) !important;
+    }
+
+    /* ── Tabele ── */
+    .dark table thead            { background: #0f172a !important; }
+    .dark table tbody tr:hover   { background: rgba(99,102,241,0.08); }
+    .dark table td               { color: var(--text-muted); }
+
+    /* ── Input-uri și Dropdown-uri ── */
+    .dark input,
+    .dark select {
+      background: var(--bg-soft);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .dark input:focus,
+    .dark select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+      outline: none;
+    }
+    /* Opțiunile dropdown trebuie să aibă fundal manual (nu moștenesc) */
+    .dark select option          { background: var(--bg-card); }
+
+    /* ── Butoane ── */
+    .dark button                 { transition: all 0.2s ease; }
+    .dark .bg-indigo-600         { background: var(--accent) !important; color: white !important; }
+    .dark .bg-indigo-600:hover   { background: var(--accent-hover) !important; }
+
+    /* ── Umbre (ajustate pentru fundaluri întunecate) ── */
+    .dark .shadow-sm  { box-shadow: 0 1px 2px rgba(0,0,0,0.4) !important; }
+    .dark .shadow-xl  { box-shadow: 0 20px 40px rgba(0,0,0,0.6) !important; }
+
+    /* ── Scrollbar custom (detaliu premium) ── */
+    .dark ::-webkit-scrollbar              { height: 8px; width: 8px; }
+    .dark ::-webkit-scrollbar-thumb        { background: #2a3a55; border-radius: 6px; }
+    .dark ::-webkit-scrollbar-thumb:hover  { background: #3b4d6b; }
+
+    /* ── Popup documentație în dark mode ── */
+    .dark #docs-modal {
+      background: rgba(2, 6, 23, 0.74);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+    .dark #docs-modal-inner {
+      background: #0f172a !important;
+      border-color: var(--border) !important;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7) !important;
+    }
+    .dark .docs-modal-header {
+      background: #111b2d !important;
+      border-color: var(--border) !important;
+    }
+    .dark #docs-modal-frame {
+      background: #0f172a !important;
+    }
+    .dark .docs-modal-close:hover {
+      background: #1f2a40 !important;
+      color: var(--text-main) !important;
+    }

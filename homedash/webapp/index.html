@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<!--
+  HomeDash - intrare principală modularizată.
+  Structură fișiere:
+    • index.html  -> shell UI + markup static
+    • styles.css  -> stiluri globale + dark theme
+    • script.js   -> logica aplicației (SPA hash routing)
+-->
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HomeDash - analiza si vizualizare cheltuieli utilitati casa">
+  <title>HomeDash – Costuri Casă</title>
+
+  <!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║              HomeDash – Tracker Cheltuieli Utilități             ║
+  ║                        Versiunea v35                             ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║  Dependențe locale (folder assets):                              ║
+  ║  • Tailwind CSS  – framework de stiluri utilitare                ║
+  ║  • Chart.js      – grafice interactive (bar, line)               ║
+  ║  • PapaParse     – parsare fișiere CSV                           ║
+  ║  • Material Icons + Font Inter – iconițe și tipografie           ║
+  ╚══════════════════════════════════════════════════════════════════╝
+  -->
+
+  <!-- Tailwind CSS local (assets): include clasele utilitare fără build step -->
+  <script src="./assets/tailwind.js"></script>
+  <!-- Chart.js v4 local (assets) – biblioteca de grafice -->
+  <script src="./assets/chart.umd.min.js"></script>
+  <!-- PapaParse v5 local (assets) – parser robust pentru CSV -->
+  <script src="./assets/papaparse.min.js"></script>
+  <!-- Datele CSV implicite (separate de logica principală pentru mentenanță facilă) -->
+  <script src="./assets/default-data.js"></script>
+  <!-- Material Icons local (assets/fonts) -->
+  <link href="./assets/material-icons.css" rel="stylesheet">
+  <!-- Font Inter local (assets/fonts) -->
+  <link href="./assets/inter.css" rel="stylesheet">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       INIȚIALIZARE DARK MODE TAILWIND
+       Activăm dark mode bazat pe clasă (`.dark` pe <html>), nu pe
+       media query. Astfel putem comuta manual tema din UI.
+       ═══════════════════════════════════════════════════════════════ -->
+  <script>
+    document.documentElement.setAttribute('data-tailwind-config', JSON.stringify({
+      darkMode: 'class'
+    }));
+  </script>
+
+  <!--
+    CSS-ul aplicației a fost extras în fișier separat pentru mentenanță mai simplă.
+    Toate stilurile existente din fostul bloc <style> sunt acum în styles.css.
+  -->
+  <link rel="stylesheet" href="./styles.css">
+</head>
+
+<!--
+  BODY – Clasa bg-slate-50 și text-slate-900 sunt fundalul/textul
+  pentru light mode. Dark mode suprascrie aceste clase prin CSS.
+-->
+<body class="bg-slate-50 text-slate-900">
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     SHELL APLICAȚIE – Structura de layout principală
+     ═══════════════════════════════════════════════════════════════════
+     Layout: Flexbox orizontal, 100% înălțime viewport.
+       • <aside>  – Sidebar fixat la stânga (lățime fixă w-64)
+       • <main>   – Zona de conținut (flex-1, scroll independent)
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="flex h-screen overflow-hidden bg-slate-50 text-slate-900">
+
+  <!-- ── SIDEBAR NAVIGARE ──────────────────────────────────────────
+       Sidebar-ul are aspect de card (border complet + rounded + shadow).
+       Conține: logo/titlu + buton dark mode + navigare cu hash links.
+       Navigarea se bazează pe hash-uri URL (#dashboard, #analysis etc.)
+  ─────────────────────────────────────────────────────────────────── -->
+  <aside class="w-70 bg-white border border-slate-200 rounded-r-3xl shadow-sm flex flex-col flex-shrink-0">
+
+    <!-- Header sidebar: Logo + Toggle Dark Mode -->
+    <div class="p-6 border-b border-slate-200 flex items-center justify-between">
+      <h1 class="text-xl font-bold tracking-tight text-slate-800 flex items-center gap-2">
+        <span class="material-icons" style="color:#4f46e5;font-size:30px">home</span>
+        <span class="font-medium text-2xl">HomeDash</span>
+      </h1>
+      <!--
+        Buton toggle temă: apelează toggleTheme() din JS.
+        Iconița se schimbă dinamic (dark_mode ↔ light_mode)
+        prin funcția setTheme() care actualizează #theme-icon.
+      -->
+      <button onclick="toggleTheme()" id="theme-toggle"
+              class="p-6 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+        <span id="theme-icon" class="material-icons" style="font-size:20px">dark_mode</span>
+      </button>
+    </div>
+
+    <!--
+      Navigare principală.
+      Fiecare link are id="nav-{pageName}" pentru a putea fi
+      activat/dezactivat de funcția navigate() cu clasa nav-active.
+    -->
+    <nav class="flex-1 p-4 space-y-6">
+      <a id="nav-dashboard" href="#dashboard"
+         class="nav-link flex items-center gap-6 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+        <span class="material-icons" style="font-size:26px">dashboard</span>
+        <span class="font-medium text-l">Dashboard</span>
+      </a>
+      <a id="nav-analysis" href="#analysis"
+         class="nav-link flex items-center gap-6 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+        <span class="material-icons" style="font-size:26px">analytics</span>
+        <span class="font-medium text-l">Analiză</span>
+      </a>
+	  <a id="nav-data" href="#data"
+         class="nav-link flex items-center gap-6 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+        <span class="material-icons" style="font-size:26px">storage</span>
+        <span class="font-medium text-l">Date</span>
+      </a>
+      <a id="nav-settings" href="#settings"
+         class="nav-link flex items-center gap-6 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+        <span class="material-icons" style="font-size:26px">settings</span>
+        <span class="font-medium text-l">Setări</span>
+      </a>
+
+    </nav>
+  </aside>
+
+  <!--
+    ZONA PRINCIPALĂ DE CONȚINUT
+    Paginile sunt randate dinamic în acest container prin innerHTML.
+    overflow-auto permite scroll independent față de sidebar.
+  -->
+  <main id="main-content" class="flex-1 overflow-auto"></main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     MODAL EDITARE CARD
+     ═══════════════════════════════════════════════════════════════════
+     Modalul este în afara fluxului principal (nu în <main>) pentru a
+     putea fi afișat deasupra oricărei pagini cu z-index ridicat.
+
+     Strategie de deschidere/închidere:
+       • Deschidere: clasa "hidden" este eliminată + body.modal-open
+       • Închidere: clasa "hidden" este re-adăugată
+       • Click pe overlay (#card-modal): apelează closeModal()
+       • Click pe conținut (#modal-inner): stopPropagation() – nu se închide
+     ═══════════════════════════════════════════════════════════════════ -->
+<div id="card-modal" class="hidden fixed inset-0 modal-bg flex items-center justify-center z-50 p-4">
+  <!--
+    Containerul interior al modalului.
+    max-h-[90vh] + overflow-y-auto: permite scroll intern dacă
+    conținutul este prea înalt pentru ecran.
+  -->
+  <div id="modal-inner"
+       class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <!-- Conținut generat dinamic de funcția renderModal() -->
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     POPUP DOCUMENTAȚIE (README / GHID)
+     ═══════════════════════════════════════════════════════════════════
+     Popup intern pentru documentele din assets/doc.
+     Se închide prin:
+       • click pe overlay (în afara conținutului)
+       • butonul de închidere
+       • tasta ESC
+     ═══════════════════════════════════════════════════════════════════ -->
+<div id="docs-modal" class="hidden fixed inset-0 modal-bg flex items-center justify-center z-50 p-4">
+  <div id="docs-modal-inner" class="bg-white rounded-2xl shadow-xl w-full max-w-6xl h-[88vh] overflow-hidden flex flex-col">
+    <div class="docs-modal-header p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+      <h3 id="docs-modal-title" class="text-base font-semibold text-slate-800">Documentație</h3>
+      <button onclick="closeInstructionPopup()" class="docs-modal-close text-slate-500 hover:text-slate-700 p-1.5 rounded-md hover:bg-slate-200">
+        <span class="material-icons" style="font-size:20px">close</span>
+      </button>
+    </div>
+    <iframe id="docs-modal-frame" title="Documentație HomeDash" src="about:blank" class="w-full flex-1 border-0 bg-white"></iframe>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     LOGICA APLICAȚIEI – JavaScript
+     ═══════════════════════════════════════════════════════════════════
+
+     Arhitectura aplicației:
+       1. DATE_DEFAULT   – CSV hard-coded cu date istorice (fallback)
+       2. State          – obiect global cu toată starea aplicației
+       3. ChartRegistry  – registru instanțe Chart.js active
+       4. Serviciu Date  – parsare, procesare, persistență
+       5. Router         – navigare bazată pe hash URL
+       6. Chart Manager  – creare/distrugere grafice Chart.js
+       7. Utilități Grid – clase Tailwind pentru grid 15 coloane
+       8. Constante UI   – metrici, culori, opțiuni disponibile
+       9. Dashboard      – pagina principală cu KPI + grafice
+      10. Analiză        – pagina de filtrare/comparare date
+      11. Setări         – configurare carduri, impozit, backup
+      12. Date           – import CSV, adăugare/ștergere înregistrări
+      13. Dark Theme     – comutare temă + persistare în localStorage
+      14. Init & Routing – bootstrapping aplicație la încărcare
+     ═══════════════════════════════════════════════════════════════════ -->
+<!--
+  Logica aplicației a fost extrasă în fișier separat (script.js),
+  păstrând intactă implementarea originală.
+-->
+<script src="./script.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+name: "HomeDash – Costuri Casă"
+description: "Aplicație web pentru analiza și vizualizarea cheltuielilor lunare ale casei (curent, gaze, apă, internet, gunoi, telefon, impozit)."
+version: "4.5"
+slug: "homedash"
+init: false
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
+startup: application
+boot: auto
+map: []
+ports:
+  8099/tcp: 8099
+ports_description:
+  8099/tcp: "HomeDash Web UI"
+ingress: true
+ingress_port: 8099
+ingress_stream: false
+panel_icon: "mdi:home-analytics"
+panel_title: "HomeDash"
+panel_admin: false
+homeassistant: "2024.1.0"
+options: {}
+schema: {}
+image: ""

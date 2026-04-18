@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>README - HomeDash</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+    body { font-family: 'Inter', system-ui, sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+  <div class="max-w-4xl mx-auto p-8">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm p-8">
+      <h1 class="text-3xl font-bold mb-6">HomeDash - README</h1>
+      <p class="text-lg mb-8">
+        HomeDash este o aplicație pentru analiza și vizualizarea cheltuielilor lunare ale casei (curent, gaze, apă, internet, gunoi, telefon, impozit).
+      </p>
+
+      <h2 class="text-2xl font-semibold mt-10 mb-4">Ce face aplicația</h2>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 dark:text-slate-300">
+        <li>Centralizează date istorice pe ani și luni într-un format unitar.</li>
+        <li>Afișează un <strong>Dashboard</strong> configurabil cu KPI-uri și grafice.</li>
+        <li>Permite <strong>analiză dinamică</strong> după filtre (ani, lună, metrici).</li>
+        <li>Permite import manual/CSV și întreținere date din pagina <strong>Date</strong>.</li>
+        <li>Permite backup/restore complet (date + setări + configurații carduri).</li>
+      </ul>
+
+      <h2 class="text-2xl font-semibold mt-10 mb-4">Structură funcțională</h2>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 dark:text-slate-300">
+        <li><strong>Dashboard</strong> - vedere de ansamblu cu carduri configurabile.</li>
+        <li><strong>Analiză</strong> - comparații și filtre pe intervale de timp.</li>
+        <li><strong>Date</strong> - import CSV și adăugare/ștergere înregistrări.</li>
+        <li><strong>Setări</strong> - configurare carduri, calcul impozit, backup/restore, documentație.</li>
+      </ul>
+
+      <h2 class="text-2xl font-semibold mt-10 mb-4">Persistență date</h2>
+      <p class="text-slate-700 dark:text-slate-300">
+        Datele aplicației sunt salvate local în browser prin <code class="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">localStorage</code>.
+      </p>
+
+      <h2 class="text-2xl font-semibold mt-10 mb-4">Tehnologii folosite</h2>
+      <ul class="list-disc pl-6 space-y-2 text-slate-700 dark:text-slate-300">
+        <li>HTML + JavaScript (fără build step).</li>
+        <li>Tailwind CSS (CDN) pentru layout și stilizare.</li>
+        <li>Chart.js pentru grafice interactive.</li>
+        <li>PapaParse pentru import și parsare CSV.</li>
+      </ul>
+
+      <div class="mt-12 pt-6 border-t border-slate-200 dark:border-slate-700 text-center text-sm text-slate-500 dark:text-slate-400">
+        @ concept si realizare vlad39
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Forțează sincronizarea temei cu site-ul principal
+    function syncTheme() {
+      try {
+        const parentIsDark = window.parent.document.documentElement.classList.contains('dark');
+        if (parentIsDark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch(e) {}
+    }
+    // Executăm imediat și apoi la fiecare 300ms pentru 3 secunde (ca să prindem și schimbările târzii)
+    syncTheme();
+    let attempts = 0;
+    const interval = setInterval(() => {
+      syncTheme();
+      attempts++;
+      if (attempts > 10) clearInterval(interval);
+    }, 300);
+  </script>
+</body>
+</html>

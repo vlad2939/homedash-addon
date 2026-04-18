@@ -25,4 +25,3 @@ panel_admin: false
 homeassistant: "2024.1.0"
 options: {}
 schema: {}
-image: ""

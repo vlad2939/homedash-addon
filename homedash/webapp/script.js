@@ -477,7 +477,7 @@ function createChart(canvasId, config) {
  * Ordinea: indigo, portocaliu, cyan, verde, roșu, violet.
  * Se ciclează prin ele cu `CHART_COLORS[i % CHART_COLORS.length]`.
  */
-const CHART_COLORS = ['#4f46e5', '#ea580c', '#0891b2', '#16a34a', '#dc2626', '#7c3aed'];
+const CHART_COLORS = ['#1664d9', '#ea580c', '#0891b2', '#16a34a', '#dc2626', '#7c3aed'];
 
 
 /* ═══════════════════════════════════════════════════════════════════

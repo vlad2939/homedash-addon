@@ -1,11 +1,12 @@
-#!/bin/sh
-echo ">> Pornire server Home Cost App..."
+#!/usr/bin/with-contenv bashio
 
-# Ne asigurăm că directorul persistat /data există
-mkdir -p /data
+bashio::log.info "═══════════════════════════════════════════"
+bashio::log.info "  HomeDash – Costuri Casă  v4.5"
+bashio::log.info "═══════════════════════════════════════════"
+bashio::log.info "Pornire server nginx pe portul 8099..."
 
-export PORT=3000
-export DATA_DIR=/data
+# Make sure nginx config directory exists
+mkdir -p /run/nginx
 
-# Pornim serverul de producție Node.js construit din angular app
-node dist/app/server/server.mjs
+# Start nginx in foreground
+exec nginx -g "daemon off;"
